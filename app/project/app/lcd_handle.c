@@ -1071,7 +1071,7 @@ static void show_temp(void)
     static uint8_t first_in = 0;
     static int disp_actual = 0;
 	static uint8_t show_step = 0;
-	
+	static int cal = 0x00;
 	switch(show_step)
 	{
 		case 0:
@@ -1131,13 +1131,13 @@ static void show_temp(void)
 							if(sFWHA01_t.temp_unit == FAHRENHEIT)
 							{
 								sFWHA01_t.system_parameter.actual_temp_f_display = 9 * sFWHA01_t.system_parameter.actual_temp / 5 + 32;
-								disp_actual = sFWHA01_t.system_parameter.actual_temp_f_display  - 122  + cal;
+								disp_actual = sFWHA01_t.system_parameter.actual_temp_f_display  - 122  + cal + (9 * (sFWHA01_t.system_parameter.temp_linear_data) / 5 + 32);
 								if(disp_actual < sFWHA01_t.system_parameter.cpu_temp_f)
 									disp_actual = sFWHA01_t.system_parameter.cpu_temp_f;
 							}
 							else
 							{
-								disp_actual = sFWHA01_t.system_parameter.actual_temp  - POWER_TEMP + cal;
+								disp_actual = sFWHA01_t.system_parameter.actual_temp  - POWER_TEMP + cal + sFWHA01_t.system_parameter.temp_linear_data;
 								if(disp_actual < sFWHA01_t.system_parameter.cpu_temp)
 									disp_actual = sFWHA01_t.system_parameter.cpu_temp;
 							}
@@ -1148,13 +1148,13 @@ static void show_temp(void)
 							if(sFWHA01_t.temp_unit == FAHRENHEIT)
 							{
 								sFWHA01_t.system_parameter.actual_temp_f_display = 9 * sFWHA01_t.system_parameter.actual_temp / 5 + 32;
-								disp_actual = sFWHA01_t.system_parameter.actual_temp_f_display + cal;
+								disp_actual = sFWHA01_t.system_parameter.actual_temp_f_display + cal + (9 * (sFWHA01_t.system_parameter.temp_linear_data) / 5 + 32);
 								if(disp_actual < sFWHA01_t.system_parameter.cpu_temp_f)
 									disp_actual = sFWHA01_t.system_parameter.cpu_temp_f;
 							}
 							else
 							{
-								disp_actual = sFWHA01_t.system_parameter.actual_temp + cal;
+								disp_actual = sFWHA01_t.system_parameter.actual_temp + cal + sFWHA01_t.system_parameter.temp_linear_data;
 								if(disp_actual < sFWHA01_t.system_parameter.cpu_temp)
 									disp_actual = sFWHA01_t.system_parameter.cpu_temp;
 							}
