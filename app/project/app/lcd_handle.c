@@ -1217,7 +1217,7 @@ static void show_temp(void)
 			show_step++;
 		break;
 		case 1:
-			if(sFWHA01_t.general_parameter.set_wind_time != 0x00)
+			if(sFWHA01_t.general_parameter.set_wind_time != 0x00 && sFWHA01_t.handle_error_state == HANDLE_OK)
 			{
 				 if (sFWHA01_t.page == CURVE_PAGE)
 					sFWHA01_t.general_parameter.set_wind_time = (sFWHA01_t.general_parameter.set_wind_time > 25) ?
@@ -1262,7 +1262,8 @@ static void show_temp(void)
 				}
 				else
 				{
-					if ((sFWHA01_t.system_parameter.last_air_data_actual != sFWHA01_t.system_parameter.air_data || sFWHA01_t.system_parameter.last_sleep_air_data != sFWHA01_t.system_parameter.sleep_air_data))
+					if ((sFWHA01_t.system_parameter.last_air_data_actual != sFWHA01_t.system_parameter.air_data || sFWHA01_t.system_parameter.last_sleep_air_data != sFWHA01_t.system_parameter.sleep_air_data) 
+						&& sFWHA01_t.handle_error_state == HANDLE_OK)
 					{
 						first_in = true;
 						sFWHA01_t.system_parameter.last_air_data_actual = sFWHA01_t.system_parameter.air_data;
@@ -1636,6 +1637,9 @@ void page_switch(void)
         sFWHA01_t.system_parameter.last_ch1_set_air = RESET_VALUE;
         sFWHA01_t.system_parameter.last_ch2_set_air = RESET_VALUE;
         sFWHA01_t.system_parameter.last_ch3_set_air = RESET_VALUE;
+		
+		if(sFWHA01_t.handle_error_state != HANDLE_OK)
+			sFWHA01_t.last_handle_error_state = RESET_VALUE;
 
         // ====================== 高效刷屏（只刷一次） ======================
         if ((sFWHA01_t.page >= SET_RUN_PAGE_CN && sFWHA01_t.page <= SET_SUPPORT_PAGE_ENG) || sFWHA01_t.page == SET_SUPPORT_PAGE_CN_HA05 || sFWHA01_t.page == SET_SUPPORT_PAGE_ENG_HA05)

@@ -1034,6 +1034,11 @@ void ec11_event_handle(void)
 			sFWHA01_t.last_run_mode = RESET_VALUE;
 		}
 		actual_temp_refesh_time = 0x00;
+		if(sFWHA01_t.handle_error_state != HANDLE_OK)
+		{
+			sFWHA01_t.last_handle_error_state = RESET_VALUE;
+//			sFWHA01_t.system_parameter.last_actual_temp = 0x00;
+		}
 //		sFWHA01_t.general_parameter.set_temp_time = SET_TEMP_SHOW_TIMES;
 		if(sFWHA01_t.run_mode == Cold_Mode)
 		{
